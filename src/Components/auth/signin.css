@@ -1,0 +1,33 @@
+.signin .card{
+  margin-top: 5rem;
+  border-radius: 10px;
+  width: 360px;
+}
+
+.signin {
+  display: flex;
+  justify-content: center;
+}
+
+.signin .card-image {
+  background-color:#bbba3e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.signin .card-image img {
+  height: 15rem;
+  width: 15rem;
+}
+.signin .login-error{
+  margin-bottom: 1.5rem;
+}
+
+@media only screen and (max-width: 360px){
+  .signin .card{
+    width: 100%;
+    margin-top: 2rem;
+  }
+}
+
+

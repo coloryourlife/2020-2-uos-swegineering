@@ -1,0 +1,156 @@
+.orderMenu {
+  max-width: 1100px;
+}
+.orderMenu .progress-bar {
+  margin-top: 5rem;
+}
+.orderMenu .progress-bar .progress {
+  background-color: #eadff5;
+  border-radius: 10px;
+}
+.orderMenu .progress-bar .progress .determinate {
+  background-color: rgb(79, 50, 143);
+  border-radius: 10px;
+}
+.orderMenu .hidden {
+  padding: 0;
+  background-color: transparent;
+}
+.orderMenu .input-field {
+  margin-bottom: 3rem;
+}
+
+.orderMenuStep1 .input-field.file-field .btn-floating {
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.orderMenuStep1 .input-field.file-field .btn-floating i {
+  font-size: 8rem;
+}
+.orderMenuStep1 .input-field.file-field .btn-floating .profile-img {
+  /* width: 10rem; */
+  height: 10rem;
+}
+.orderMenuStep1 .input-field.file-field .profileImg-desc {
+  position: relative;
+  background-color: rgb(248, 240, 255);
+}
+.orderMenuStep1 .input-field.file-field .profileImg-desc::after {
+  content: '';
+  position: absolute;
+  border-top: 10px solid transparent;
+  border-right: 15px solid rgb(248, 240, 255);
+  border-left: 15px solid transparent;
+  border-bottom: 10px solid transparent;
+  left: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.orderMenuStep2 tbody .input-field {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.orderMenuStep2 tbody .input-field.dateSetting {
+  width: 90%;
+  display: flex;
+  align-items: center;
+}
+.orderMenuStep2 tbody .input-field.dateSetting input {
+  text-align: center;
+}
+.orderMenuStep2 tbody .input-field.dateSetting span {
+  margin: 0 1rem;
+}
+.orderMenuStep2 tbody .datepicker {
+  font-size: 12px;
+}
+.orderMenuStep2 .editHistory .moreBtn {
+  margin-top: 2rem;
+}
+
+.orderMenuStep3 .tool-list {
+  margin-bottom: .5rem;
+}
+.orderMenuStep3 .tool-list .input-field {
+  margin-bottom: unset;
+}
+.orderMenuStep3 .range-field .MuiSlider-root .MuiSlider-rail {
+  height: 12px;
+}
+.orderMenuStep3 .range-field .MuiSlider-root .MuiSlider-track {
+  height: 12px;
+}
+.orderMenuStep3 .range-field .MuiSlider-root .MuiSlider-thumb {
+  margin-top: 0;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #fff;
+  background-color: rgb(114, 117, 163);
+}
+.orderMenuStep3 .tool-list {
+  display: flex;
+  align-items: center;
+}
+.orderMenuStep3 .required-warning {
+  margin-bottom: 3rem;
+}
+
+.orderMenuStep4 .moreSpecify {
+  margin-bottom: 3rem;
+}
+.orderMenuStep4 .moreSpecify span {
+  cursor: pointer;
+  /* float: left; */
+}
+.orderMenuStep4 .moreSpecify span:hover {
+  color: grey;
+}
+.orderMenuDone .card {
+  margin-top: 5rem;
+}
+#hidden-for-loading,
+.createService #hidden-for-loading,
+.orderMenu #hidden-for-loading {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000000a6;
+  z-index: 9999;
+}
+#hidden-for-loading .progress.for-loading,
+.createService #hidden-for-loading .progress.for-loading,
+.orderMenu #hidden-for-loading .progress.for-loading {
+  width: 200px;
+  height: 0.8rem;
+  top: 60%;
+  left: 50%;
+  border-radius: 20px;
+  transform: translate(-50%, -60%);
+  background-color: #9ba5a4;
+}
+#hidden-for-loading .progress.for-loading .determinate,
+.createService #hidden-for-loading .progress.for-loading .determinate,
+.orderMenu #hidden-for-loading .progress.for-loading .determinate {
+  border-radius: 20px;
+  background-color: #ffffff;
+}
+@media only screen and (max-width: 1024px) {
+  .orderMenu {
+    width: 85%;
+  }
+}
+@media only screen and (max-width: 992px) {
+  table.responsive-table th {
+    height: 72px;
+  }
+}
+
+
