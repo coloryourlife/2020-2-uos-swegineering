@@ -5,9 +5,20 @@ import { OrderMenuStep1 } from './OrderMenuStep1';
 
 export const OrderMenu = () => {
 	const [step, setStep] = useState([1])
+	const [menuList, setMenuList] = useState([])
 	const [menu, setMenu] = useState([])
 	const [style, setStyle] = useState([])
 	const [details, setDetails] = useState([])
+
+	useEffect(() => {
+		fetch('http://127.0.0.1:5000/api').then(res => {
+			if(res.ok){
+				return res.json()
+			}
+		}).then((data) => {
+			setMenuList(data.result)
+		})
+	},[])
 
 	const _next = (e) => {
 		e.preventDefault();
@@ -49,8 +60,7 @@ export const OrderMenu = () => {
 					<div className="card col s12">
 						<h4 className="center">MR.대박 디너서비스를 찾아주셔서 감사합니다.</h4>
 						<h6 className="center" style={{marginBottom:'3rem'}}>아래의 주문서를 작성해주시면 완벽한 서비스로 보답하겠습니다.</h6>
-						{console.log(step)}
-						<OrderMenuStep1 menu={menu} handleMenu = {handleMenu} currentStep = {step} />
+						<OrderMenuStep1 menu={menu} handleMenu = {handleMenu} currentStep = {step} menuList={menuList}/>
 					</div>
 					<div className="card col s12 z-depth-0 hidden">
 						{step < 4 ? <div onClick = {_next} className="btn blue darken-4 right">다음</div> : null}

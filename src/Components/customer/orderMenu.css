@@ -19,7 +19,10 @@
 .orderMenu .input-field {
   margin-bottom: 3rem;
 }
-
+.orderMenuStep1 .menuContent{
+  margin-bottom: 4rem;
+  font-size: 16px;
+}
 .orderMenuStep1 .input-field.file-field .btn-floating {
   width: 10rem;
   height: 10rem;
