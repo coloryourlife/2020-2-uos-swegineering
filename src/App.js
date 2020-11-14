@@ -15,7 +15,7 @@ function App() {
           <Route path='/signup'>
             <SignUp/>
           </Route>
-          <Route path='/order/:order_id'>
+          <Route path='/order'>
             <OrderMenu />
           </Route>
         </Switch>

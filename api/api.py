@@ -30,8 +30,13 @@ def getMenu():
 	menu = pymongo.collection.Collection(db, 'menu')
 	output = []
 	for m in menu.find():
-		output.append({'name' : m['name'], 'content':m['content'], 'style':m['style']})
+		output.append({'name' : m['name'], 'content':m['content'], 'price':m['price']})
 	return jsonify({'result' : output})
+
+@app.route('/api/menuName', methods=['GET'])
+def getStyle():
+	styles = pymongo.collection.Collection(db,'style')
+
 
 if __name__ == '__main__':
 	app.run(debug=True)

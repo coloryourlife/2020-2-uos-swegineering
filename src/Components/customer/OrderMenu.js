@@ -2,9 +2,10 @@ import React, {useState, useEffect } from 'react';
 import './orderMenu.css';
 import { Loader } from '../functionalComponents/Loader';
 import { OrderMenuStep1 } from './OrderMenuStep1';
+import { OrderMenuStep2 } from './OrderMenuStep2';
 
 export const OrderMenu = () => {
-	const [step, setStep] = useState([1])
+	const [step, setStep] = useState(1)
 	const [menuList, setMenuList] = useState([])
 	const [menu, setMenu] = useState([])
 	const [style, setStyle] = useState([])
@@ -36,10 +37,12 @@ export const OrderMenu = () => {
 	}
 
 	const handleMenu = (e) => {
-		e.preventDefault();
-		setMenu(e);
+		let currentStep = step;
+		currentStep = currentStep >= 3 ? 4 : currentStep + 1;
+		setStep(currentStep);
+		setMenu(e.target.id);
+		//fetch('http:/127.0.0.1:5000/api')
 	}
-
 	return(
 		<>
 			<div className="container orderMenu">
@@ -61,11 +64,12 @@ export const OrderMenu = () => {
 						<h4 className="center">MR.대박 디너서비스를 찾아주셔서 감사합니다.</h4>
 						<h6 className="center" style={{marginBottom:'3rem'}}>아래의 주문서를 작성해주시면 완벽한 서비스로 보답하겠습니다.</h6>
 						<OrderMenuStep1 menu={menu} handleMenu = {handleMenu} currentStep = {step} menuList={menuList}/>
+						<OrderMenuStep2 menu={menu} handleMenu = {handleMenu} currentStep = {step} menuList={menuList}/>
 					</div>
 					<div className="card col s12 z-depth-0 hidden">
-						{step < 4 ? <div onClick = {_next} className="btn blue darken-4 right">다음</div> : null}
+						{step < 4 && step > 1? <div onClick = {_next} className="btn blue darken-4 right">다음</div> : null}
 						{step !== 1 ? <div onClick = {_prev} className="btn grey darken-2 left">이전</div> : null}
-						{step == 4 ? <button className = 'btn red lighten-3 right'>결제하기</button> : null}
+						{step === 4 ? <button className = 'btn red lighten-3 right'>결제하기</button> : null}
 					</div>
 				</form>
 			</div>

@@ -1,16 +1,16 @@
 import React from 'react';
 
-export const OrderMenuStep1 = ({ menu, handleMenu, currentStep, menuList}) => {
-	if(currentStep !== 1) return null;
+export const OrderMenuStep2 = ({ menu, handleMenu, currentStep, menuList}) => {
+	if(currentStep !== 2) return null;
 
 	const noEnter = (e) => {
 		if(e.keyCode === 13) e.preventDefault();
 	}
-
+	console.log(menu)
 	return(
 		<>
 			<div className="row orderMenuStep1">
-				<h5 className="left col s10 offset-s1">디너 메뉴</h5>
+				<h5 className="left col s10 offset-s1">스타일 선택</h5>
 				{menuList.map((menus) => {
 					return(
 						<div className="col s4" key={menus.name}>
