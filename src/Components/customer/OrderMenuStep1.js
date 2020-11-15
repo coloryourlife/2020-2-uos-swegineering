@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const OrderMenuStep1 = ({ menu, handleMenu, currentStep, menuList}) => {
+export const OrderMenuStep1 = ({ handleMenu, currentStep, menuList}) => {
 	if(currentStep !== 1) return null;
 
 	const noEnter = (e) => {

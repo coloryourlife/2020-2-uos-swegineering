@@ -9,6 +9,7 @@ export const OrderMenu = () => {
 	const [menuList, setMenuList] = useState([])
 	const [menu, setMenu] = useState([])
 	const [style, setStyle] = useState([])
+	const [styleList, setStyleList] = useState([])
 	const [details, setDetails] = useState([])
 
 	useEffect(() => {
@@ -41,7 +42,23 @@ export const OrderMenu = () => {
 		currentStep = currentStep >= 3 ? 4 : currentStep + 1;
 		setStep(currentStep);
 		setMenu(e.target.id);
-		//fetch('http:/127.0.0.1:5000/api')
+		console.log(menu);
+		fetch(`http://127.0.0.1:5000/api/${e.target.id}`)
+		.then(res => {
+			if(res.ok){
+				return res.json()
+			}
+		}).then((data) => {
+			setStyleList(data.result)
+		})
+	}
+
+	const handleStyle = (e) => {
+		let currentStep = step;
+		currentStep = currentStep >= 3 ? 4 : currentStep + 1;
+		setStep(currentStep);
+		setStyle(e.target.id);
+		console.log(style);
 	}
 	return(
 		<>
@@ -64,7 +81,7 @@ export const OrderMenu = () => {
 						<h4 className="center">MR.대박 디너서비스를 찾아주셔서 감사합니다.</h4>
 						<h6 className="center" style={{marginBottom:'3rem'}}>아래의 주문서를 작성해주시면 완벽한 서비스로 보답하겠습니다.</h6>
 						<OrderMenuStep1 menu={menu} handleMenu = {handleMenu} currentStep = {step} menuList={menuList}/>
-						<OrderMenuStep2 menu={menu} handleMenu = {handleMenu} currentStep = {step} menuList={menuList}/>
+						<OrderMenuStep2 menu={menu} handleStyle={handleStyle} currentStep = {step} styleList={styleList}/>
 					</div>
 					<div className="card col s12 z-depth-0 hidden">
 						{step < 4 && step > 1? <div onClick = {_next} className="btn blue darken-4 right">다음</div> : null}

@@ -33,10 +33,19 @@ def getMenu():
 		output.append({'name' : m['name'], 'content':m['content'], 'price':m['price']})
 	return jsonify({'result' : output})
 
-@app.route('/api/menuName', methods=['GET'])
-def getStyle():
+@app.route('/api/<string:menuName>', methods=['GET'])
+def getStyle(menuName):
 	styles = pymongo.collection.Collection(db,'style')
-
+	available_menu = []
+	available_style = []
+	style_all = styles.find()
+	for s in style_all:
+		for name in s['possible_menu']:
+			if name == menuName:
+				available_menu.append(s['name'])
+	for ss in styles.find({"name" : {"$in" : available_menu}}):
+		available_style.append({'name' : ss['name'], 'content' : ss['content'], 'price' : ss['price']})
+	return jsonify({'result' : available_style})
 
 if __name__ == '__main__':
 	app.run(debug=True)
