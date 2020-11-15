@@ -42,7 +42,6 @@ export const OrderMenu = () => {
 		currentStep = currentStep >= 3 ? 4 : currentStep + 1;
 		setStep(currentStep);
 		setMenu(e.target.id);
-		console.log(menu);
 		fetch(`http://127.0.0.1:5000/api/${e.target.id}`)
 		.then(res => {
 			if(res.ok){
