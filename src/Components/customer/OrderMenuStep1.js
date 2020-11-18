@@ -18,6 +18,7 @@ export const OrderMenuStep1 = ({ handleMenu, currentStep, menuList}) => {
 								<div className="card-content">
 									<span className="card-title">{menus.name}</span>
 									<div className="menuContent">{menus.content}</div>
+									<div className="price">{menus.price} 원 / 인</div>
 								</div>
 								<div className="card-action">
 									<div className="waves-effect waves-light btn" onClick = {handleMenu} id={menus.name}>선택하기</div>

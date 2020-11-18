@@ -3,6 +3,7 @@ import './orderMenu.css';
 import { Loader } from '../functionalComponents/Loader';
 import { OrderMenuStep1 } from './OrderMenuStep1';
 import { OrderMenuStep2 } from './OrderMenuStep2';
+import { OrderMenuStep3 } from './OrderMenuStep3';
 
 export const OrderMenu = () => {
 	const [step, setStep] = useState(1)
@@ -10,6 +11,7 @@ export const OrderMenu = () => {
 	const [menu, setMenu] = useState([])
 	const [style, setStyle] = useState([])
 	const [styleList, setStyleList] = useState([])
+	const [detailList, setDetailList] = useState([])
 	const [details, setDetails] = useState([])
 
 	useEffect(() => {
@@ -57,7 +59,18 @@ export const OrderMenu = () => {
 		currentStep = currentStep >= 3 ? 4 : currentStep + 1;
 		setStep(currentStep);
 		setStyle(e.target.id);
-		console.log(style);
+		fetch(`http://127.0.0.1:5000/order/${menu}`)
+		.then(res => {
+			if(res.ok){
+				return res.json()
+			}
+		}).then((data) => {
+			setDetailList(data.result[0].details)
+		})
+	}
+
+	const handleQuantity = (e) => {
+		
 	}
 	return(
 		<>
@@ -81,9 +94,10 @@ export const OrderMenu = () => {
 						<h6 className="center" style={{marginBottom:'3rem'}}>아래의 주문서를 작성해주시면 완벽한 서비스로 보답하겠습니다.</h6>
 						<OrderMenuStep1 menu={menu} handleMenu = {handleMenu} currentStep = {step} menuList={menuList}/>
 						<OrderMenuStep2 menu={menu} handleStyle={handleStyle} currentStep = {step} styleList={styleList}/>
+						<OrderMenuStep3 menu={menu} style={style} currentStep = {step} styleList={styleList} detailList = {detailList}/>
 					</div>
 					<div className="card col s12 z-depth-0 hidden">
-						{step < 4 && step > 1? <div onClick = {_next} className="btn blue darken-4 right">다음</div> : null}
+						{step === 3? <div onClick = {_next} className="btn blue darken-4 right">다음</div> : null}
 						{step !== 1 ? <div onClick = {_prev} className="btn grey darken-2 left">이전</div> : null}
 						{step === 4 ? <button className = 'btn red lighten-3 right'>결제하기</button> : null}
 					</div>

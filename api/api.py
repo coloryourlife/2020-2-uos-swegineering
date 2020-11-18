@@ -47,5 +47,14 @@ def getStyle(menuName):
 		available_style.append({'name' : ss['name'], 'content' : ss['content'], 'price' : ss['price']})
 	return jsonify({'result' : available_style})
 
+@app.route('/order/<string:menuName>', methods=['GET'])
+def getDetails(menuName):
+	details = pymongo.collection.Collection(db,'details')
+	details_list = []
+	for d in details.find():
+		if d['name'] == menuName:
+			details_list.append({'name' : d['name'], 'details':d['details']})
+	return jsonify({'result' : details_list})
+
 if __name__ == '__main__':
 	app.run(debug=True)
