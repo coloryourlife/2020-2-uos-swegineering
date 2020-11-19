@@ -30,7 +30,7 @@ def getMenu():
 	menu = pymongo.collection.Collection(db, 'menu')
 	output = []
 	for m in menu.find():
-		output.append({'name' : m['name'], 'content':m['content'], 'price':m['price']})
+		output.append({'name' : m['name'], 'content':m['content'], 'price':m['price'],'quantity':m['quantity']})
 	return jsonify({'result' : output})
 
 @app.route('/api/<string:menuName>', methods=['GET'])

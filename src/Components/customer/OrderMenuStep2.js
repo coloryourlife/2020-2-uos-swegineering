@@ -1,12 +1,9 @@
 import React from 'react';
 
-export const OrderMenuStep2 = ({ menu, handleStyle, currentStep, styleList}) => {
+export const OrderMenuStep2 = ({ handleStyle, currentStep, styleList}) => {
 	if(currentStep !== 2) return null;
 
-	const noEnter = (e) => {
-		if(e.keyCode === 13) e.preventDefault();
-	}
-	if(styleList.length == 0) return <div className="container">로딩중...</div>
+	if(styleList.length === 0) return <div className="container">로딩중...</div>
 	return(
 		<>
 			<div className="row orderMenuStep2">
@@ -21,7 +18,7 @@ export const OrderMenuStep2 = ({ menu, handleStyle, currentStep, styleList}) => 
 									<div className="menuContent price">+ {styles.price} 원 / 인</div>
 								</div>
 								<div className="card-action">
-									<div className="waves-effect waves-light btn" onClick={handleStyle} id={styles.name}>선택하기</div>
+									<button className="waves-effect waves-light btn" onClick={handleStyle} id={styles.name} value={styles.price}>선택하기</button>
 								</div>
 							</div>
 						</div>

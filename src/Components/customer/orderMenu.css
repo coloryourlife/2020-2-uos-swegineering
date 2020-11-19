@@ -16,6 +16,30 @@
   padding: 0;
   background-color: transparent;
 }
+
+.orderMenuStep1 .menuQuantity {
+  border: 1px solid black !important;
+  width : 30% !important;
+  height: 2rem !important;
+  margin-top : 20px !important;
+  text-align: center;
+
+}
+
+.payment .cardNum-container{
+  margin-top: 2rem;
+}
+.payment .cardNum {
+  text-align: center;
+  margin-right: 10px !important;
+  width: 10% !important;
+}
+
+.orderMenuStep3 .menuQuantity {
+  width : 30% !important;
+  text-align: center;
+}
+
 .orderMenu .input-field {
   margin-bottom: 3rem;
 }
@@ -124,6 +148,11 @@
 }
 .orderMenuStep3 .required-warning {
   margin-bottom: 3rem;
+}
+
+.orderMenuStep4 .priceAll{
+  text-align: right;
+  margin-top: 1rem;
 }
 
 .orderMenuStep4 .moreSpecify {

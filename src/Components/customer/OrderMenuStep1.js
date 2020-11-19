@@ -1,16 +1,13 @@
 import React from 'react';
 
-export const OrderMenuStep1 = ({ handleMenu, currentStep, menuList}) => {
+export const OrderMenuStep1 = ({ handleMenu, currentStep, menuList, handleChange}) => {
 	if(currentStep !== 1) return null;
-
-	const noEnter = (e) => {
-		if(e.keyCode === 13) e.preventDefault();
-	}
 
 	return(
 		<>
 			<div className="row orderMenuStep1">
-				<h5 className="left col s10 offset-s1">디너 메뉴</h5>
+				<h4 className="left col s10 offset-s1">디너 메뉴</h4>
+				<h5 className="left col s10 offset-s1">메뉴는 한 가지로 통일해주셔야 합니다.</h5>
 				{menuList.map((menus) => {
 					return(
 						<div className="col s4" key={menus.name}>
@@ -19,9 +16,10 @@ export const OrderMenuStep1 = ({ handleMenu, currentStep, menuList}) => {
 									<span className="card-title">{menus.name}</span>
 									<div className="menuContent">{menus.content}</div>
 									<div className="price">{menus.price} 원 / 인</div>
+									<input type="number" className="menuQuantity" value={menus.quantity} id={menus.name} onChange={handleChange} min="0"/>
 								</div>
 								<div className="card-action">
-									<div className="waves-effect waves-light btn" onClick = {handleMenu} id={menus.name}>선택하기</div>
+									<button className="waves-effect waves-light btn" onClick = {handleMenu} id={menus.name} value={menus.quantity}>선택하기</button>
 								</div>
 							</div>
 						</div>
