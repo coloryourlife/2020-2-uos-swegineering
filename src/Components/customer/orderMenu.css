@@ -23,7 +23,17 @@
   height: 2rem !important;
   margin-top : 20px !important;
   text-align: center;
+}
 
+.orderMenuStep2 .card-content{
+  position: relative;
+}
+.orderMenuStep2 .price{
+  position: absolute;
+  bottom:5%;
+  left: 20%;
+  right:20%;
+  text-align:center;
 }
 
 .payment .cardNum-container{
@@ -43,13 +53,22 @@
 .orderMenu .input-field {
   margin-bottom: 3rem;
 }
-.orderMenuStep1 .menuContent{
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 16px;
+.orderMenuStep1 .price{
+  position: absolute;
+  bottom: 20%;
+  left:20%;
+  right:20%;
+}
+
+.orderMenuStep1 .menuQuantity{
+  position: absolute;
+  bottom: 0;
+  left:35%;
+  text-align: center
 }
 .orderMenuStep1 .card-content{
   height: 300px;
+  position: relative;
 }
 .orderMenuStep2 .card-content{
   height: 300px;

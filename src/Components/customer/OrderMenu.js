@@ -46,6 +46,7 @@ export const OrderMenu = () => {
 			menuName : menu.name,
 			style : style.name,
 			style_price : style.price,
+			style_quantity: style.quantity,
 			details : detail,
 			price : price
 		})
@@ -70,21 +71,29 @@ export const OrderMenu = () => {
 	}
 
 	const handleMenu = (e) => {
-		let currentStep = step;
-		currentStep = currentStep >= 3 ? 4 : currentStep + 1;
-		setStep(currentStep);
-		setMenu({
-			name : e.target.id,
-			quantity : e.target.value
-		});
-		fetch(`http://127.0.0.1:5000/api/${e.target.id}`)
-		.then(res => {
-			if(res.ok){
-				return res.json()
-			}
-		}).then((data) => {
-			setStyleList(data.result)
-		})
+		if((e.target.id ==="샴페인 축제 디너(Champagne Feast dinner)") && (e.target.value === "1")){
+			alert("샴페인 축제디너는 2인분 이상 주문하셔야 합니다.")
+		}
+		else if(e.target.value ==="0"){
+			alert("최소 1인분 이상은 주문해주셔야 합니다.")
+		}
+		else{
+			let currentStep = step;
+			currentStep = currentStep >= 3 ? 4 : currentStep + 1;
+			setStep(currentStep);
+			setMenu({
+				name : e.target.id,
+				quantity : e.target.value
+			});
+			fetch(`http://127.0.0.1:5000/api/${e.target.id}`)
+			.then(res => {
+				if(res.ok){
+					return res.json()
+				}
+			}).then((data) => {
+				setStyleList(data.result)
+			})
+		}
 	}
 
 	const handleStyle = (e) => {

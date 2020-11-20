@@ -12,7 +12,7 @@ export const OrderMenuStep4 = ({ currentStep, order}) => {
 					<div className="card darken-1" >
 						<div className="card-content">
 							<div>주문 메뉴 : {order.menuName}</div>
-							<div>스타일 : {order.style} ({order.style_price}원 / 인)</div>
+							<div>스타일 : {order.style} ({order.style_price}원 * {order.style_quantity} 인)</div>
 							<table className="center">
 								<thead>
 									<tr>

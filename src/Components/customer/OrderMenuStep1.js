@@ -16,7 +16,7 @@ export const OrderMenuStep1 = ({ handleMenu, currentStep, menuList, handleChange
 									<span className="card-title">{menus.name}</span>
 									<div className="menuContent">{menus.content}</div>
 									<div className="price">{menus.price} 원 / 인</div>
-									<input type="number" className="menuQuantity" value={menus.quantity} id={menus.name} onChange={handleChange} min="0"/>
+									<input type="number" className="menuQuantity" value={menus.quantity} id={menus.name} onChange={handleChange} min="0" required/>
 								</div>
 								<div className="card-action">
 									<button className="waves-effect waves-light btn" onClick = {handleMenu} id={menus.name} value={menus.quantity}>선택하기</button>

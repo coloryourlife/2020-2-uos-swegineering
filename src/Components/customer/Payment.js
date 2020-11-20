@@ -21,6 +21,9 @@ export const Payment = ({ currentStep, order }) => {
 								<input className="cardNum" type="text" maxLength="4" />
 							</div>
 						</div>
+						<div className="card-action">
+						<button className="waves-effect waves-light btn">결제하기</button>
+						</div>
 					</div>
 				</div>
 			</div>
