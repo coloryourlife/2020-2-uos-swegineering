@@ -2,7 +2,7 @@ import React from 'react';
 
 export const OrderMenuStep1 = ({ handleMenu, currentStep, menuList, handleChange}) => {
 	if(currentStep !== 1) return null;
-
+	if(menuList.length === 0) return <div>로그인해주세요</div>
 	return(
 		<>
 			<div className="row orderMenuStep1">

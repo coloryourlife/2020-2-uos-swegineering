@@ -91,7 +91,7 @@ def getMenu():
 			output.append({'name' : m['name'], 'content':m['content'], 'price':m['price'],'quantity':m['quantity']})
 		return jsonify({'result' : output})
 	except Exception:
-		return redirect('/')
+		return jsonify({'result' : []})
 
 	
 @app.route('/api/<string:menuName>', methods=['GET'])
