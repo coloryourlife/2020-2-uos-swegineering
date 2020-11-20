@@ -18,7 +18,10 @@ export const OrderMenu = () => {
 	const [order, setOrder] = useState([])
 
 	useEffect(() => {
-		fetch('http://127.0.0.1:5000/api').then(res => {
+		fetch('http://127.0.0.1:5000/api',{
+			method:'GET',
+			credentials:'include'
+		}).then(res => {
 			if(res.ok){
 				return res.json()
 			}
