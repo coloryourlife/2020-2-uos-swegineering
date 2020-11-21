@@ -8,7 +8,7 @@ from functools import wraps
 import datetime
 
 app = Flask(__name__)
-CORS(app)
+#CORS(app)
 app.config['JSON_AS_ASCII'] = False
 CONNECTION_STRING = "mongodb+srv://chris0319:rkdska0401@cluster0.0umdc.mongodb.net/test?retryWrites=true&w=majority"
 client = pymongo.MongoClient(CONNECTION_STRING)

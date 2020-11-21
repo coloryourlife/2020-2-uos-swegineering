@@ -24,7 +24,8 @@ export const SignIn = (props) => {
 				method: 'POST',
 				headers:{
 					'Authorization' : data.token
-				}
+				},
+				credentials: "include"
 			}).then(()=>{
 				history.push('/order')
 			})
