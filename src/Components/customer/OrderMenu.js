@@ -20,7 +20,7 @@ export const OrderMenu = () => {
 	useEffect(() => {
 		fetch('http://127.0.0.1:5000/api',{
 			method:'GET',
-			credentials:'same-origin'
+			credentials:'include'
 		}).then(res => {
 			if(res.ok){
 				return res.json()

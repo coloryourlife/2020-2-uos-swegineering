@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import cookie from 'react-cookie'
-import Axios from 'axios';
+import axios from 'axios';
 import './signin.css';
 
 export const SignIn = (props) => {
@@ -25,7 +25,8 @@ export const SignIn = (props) => {
 				headers:{
 					'Authorization' : data.token
 				},
-				credentials: "include"
+				credentials: "include",
+				credentials: "same-origin"
 			}).then(()=>{
 				history.push('/order')
 			})

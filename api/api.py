@@ -2,14 +2,24 @@ import firebase_admin
 import pyrebase
 from flask import Flask, jsonify, request, json,redirect
 from firebase_admin import credentials, auth
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_pymongo import pymongo
 from functools import wraps
 import datetime
 
+
+config = {
+  'ORIGINS': [
+    'http://localhost:3000',  # React
+    'http://127.0.0.1:3000',  # React
+  ],
+
+  'SECRET_KEY': '...'
+}
 app = Flask(__name__)
-#CORS(app)
+CORS(app, resources={ r'/*': {'origins': config['ORIGINS']}}, supports_credentials=True)
 app.config['JSON_AS_ASCII'] = False
+app.config["CORS_SUPPORTS_CREDENTIALS"] = True
 CONNECTION_STRING = "mongodb+srv://chris0319:rkdska0401@cluster0.0umdc.mongodb.net/test?retryWrites=true&w=majority"
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('mrdaebak')
@@ -41,15 +51,11 @@ def session_initializer():
 		expires = datetime.datetime.now() + expires_in
 		response = jsonify({'status':'success'})
 		response.set_cookie(
-			'session', session_cookie, expires=expires, httponly=True
+			'session', session_cookie, expires=expires, httponly=False
 		) 
 		return response
 	except auth.AuthError:
 		return{'message' : 'Error'}, 400
-
-@app.route('/api/userinfo')
-def userinfo():
-	return {'data':users}, 200
 
 @app.route('/api/signup')
 def signup():
@@ -80,6 +86,7 @@ def token():
 
 @app.route('/api',methods=['GET'])
 def getMenu():
+	print(request.headers)
 	session_cookie = request.cookies.get('session')
 	print(session_cookie)
 	print(1)
