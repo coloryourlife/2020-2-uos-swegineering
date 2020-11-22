@@ -5,8 +5,9 @@ import { OrderMenuStep1 } from './OrderMenuStep1';
 import { OrderMenuStep2 } from './OrderMenuStep2';
 import { OrderMenuStep3 } from './OrderMenuStep3';
 import { OrderMenuStep4 } from './OrderMenuStep4';
+import { Navbar } from '../layout/Navbar';
 import { Payment } from './Payment';
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 export const OrderMenu = () => {
 	const [step, setStep] = useState(1)
@@ -16,17 +17,25 @@ export const OrderMenu = () => {
 	const [styleList, setStyleList] = useState([])
 	const [details, setDetails] = useState([])
 	const [order, setOrder] = useState([])
+	const [userInfo, setUserInfo] = useState([])
+	const location = useLocation()
 
 	useEffect(() => {
 		fetch('http://127.0.0.1:5000/api',{
-			method:'GET',
-			credentials:'include'
+			method:'POST',
+			headers:{
+				"Content-type": "application/json; charset=UTF-8"
+			},
+			credentials:'include',
+			body : JSON.stringify(location.state)
 		}).then(res => {
 			if(res.ok){
 				return res.json()
 			}
 		}).then((data) => {
+			console.log(data)
 			setMenuList(data.result)
+			console.log(data.userInfo)
 		})
 	},[])
 
@@ -143,6 +152,7 @@ export const OrderMenu = () => {
 
 	return(
 		<>
+			<Navbar/>
 			<div className="container orderMenu">
 				<div id="hidden-for-loading">
 					<Loader />

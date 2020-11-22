@@ -1,0 +1,14 @@
+.nav-wrapper {
+  background-color: white;
+}
+
+.logout{
+	padding-right:2rem;
+}
+
+@media only screen and (max-width: 2000px){
+	.brand-logo{
+		left: 1rem !important;
+    transform: initial !important;
+	}
+}

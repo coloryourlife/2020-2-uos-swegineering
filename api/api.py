@@ -1,6 +1,7 @@
 import firebase_admin
 import pyrebase
-from flask import Flask, jsonify, request, json,redirect
+
+from flask import Flask, jsonify, request, json,redirect, make_response, abort
 from firebase_admin import credentials, auth
 from flask_cors import CORS, cross_origin
 from flask_pymongo import pymongo
@@ -11,7 +12,9 @@ import datetime
 config = {
   'ORIGINS': [
     'http://localhost:3000',  # React
-    'http://127.0.0.1:3000',  # React
+    'http://127.0.0.1:3000',
+		'http://127.0.0.1:3000/order',
+		'http://localhost:3000/order'  # React
   ],
 
   'SECRET_KEY': '...'
@@ -41,26 +44,42 @@ pb = pyrebase.initialize_app(json.load(open('fbconfig.json')))
 # 		return f(*args, **kwargs)
 # 	return wrap
 
-@app.route('/api/sessionInit', methods=['POST'])
-def session_initializer():
-	#id_token = request.form['idToken']
-	id_token = request.headers.get('authorization')
-	expires_in = datetime.timedelta(days=1)
+@app.route('/sessionLogin', methods=['POST'])
+def session_login():
+	id_token = request.json['idToken']
+	expires_in = datetime.timedelta(days=2)
 	try:
-		session_cookie = auth.create_session_cookie(id_token, expires_in = expires_in)
-		expires = datetime.datetime.now() + expires_in
+		session_cookie = auth.create_session_cookie(id_token, expires_in=expires_in)
 		response = jsonify({'status':'success'})
+		expires = datetime.datetime.now() + expires_in
 		response.set_cookie(
 			'session', session_cookie, expires=expires, httponly=False
-		) 
+		)
 		return response
-	except auth.AuthError:
-		return{'message' : 'Error'}, 400
+	except Exception.FirebaseError:
+		return abort(401, "Failed")
 
-@app.route('/api/signup')
+# @app.route('/api/sessionInit', methods=['POST'])
+# def session_initializer():
+# 	#id_token = request.form['idToken']
+# 	id_token = request.headers.get('authorization')
+# 	expires_in = datetime.timedelta(days=1)
+# 	try:
+# 		session_cookie = auth.create_session_cookie(id_token, expires_in = expires_in)
+# 		expires = datetime.datetime.now() + expires_in
+# 		response = jsonify({'status':'success'})
+# 		response.set_cookie(
+# 			'session', session_cookie, expires=expires, httponly=False
+# 		) 
+# 		return response
+# 	except auth.AuthError:
+# 		return{'message' : 'Error'}, 400
+
+@app.route('/api/signup', methods=['POST'])
 def signup():
-	email = request.form.get('email')
-	password = request.form.get('password')
+	userInfo = request.json
+	email = userInfo['email']
+	password = userInfo['password']
 	if email is None or password is None:
 		return{'message' : 'Error missing email or password'}, 400
 	try:
@@ -68,9 +87,20 @@ def signup():
 			email = email,
 			password = password
 		)
+		userdb = pymongo.collection.Collection(db,'userInfo')
+		userdb.insert_one({"email": userInfo['email'], "name":userInfo['name'], 'address':userInfo['address'], 'phoneNumber':userInfo['phoneNumber'],'cardNum':userInfo['cardNum'],'level':'bronze','total_order': 0})
 		return {'message' : f'Successfully created user {user.uid}'}, 200
 	except:
 		return {'message' : 'Error creating user'}, 400
+
+@app.route('/sessionLogout', methods=['POST'])
+def session_logout():
+	session_cookie = request.cookies.get('session')
+	decoded_claims = auth.verify_session_cookie(session_cookie)
+	auth.revoke_refresh_tokens(decoded_claims['sub'])
+	response = jsonify({})
+	response.set_cookie('session', expires=0)
+	return response
 
 @app.route('/api/token', methods=['POST','GET'])
 def token():
@@ -84,21 +114,28 @@ def token():
 	except:
 		return {'message' : 'There was an error logging in'}
 
-@app.route('/api',methods=['GET'])
+@app.route('/api',methods=['POST'])
 def getMenu():
-	print(request.headers)
+	redirect('/api')
 	session_cookie = request.cookies.get('session')
 	print(session_cookie)
-	print(1)
+	email = request.json['email']
 	try:
 		decoded_claims = auth.verify_session_cookie(session_cookie, check_revoked=True)
+		print(decoded_claims)
 		menu = pymongo.collection.Collection(db, 'menu')
+		userInfo = pymongo.collection.Collection(db,'userInfo')
+		userInfos = userInfo.find()
+		user = []
 		output = []
+		for u in userInfos:
+			if u['email'] == email:
+				user.append(u)
 		for m in menu.find():
 			output.append({'name' : m['name'], 'content':m['content'], 'price':m['price'],'quantity':m['quantity']})
-		return jsonify({'result' : output})
+		return jsonify({'result' : output, 'userInfo' : user})
 	except Exception:
-		return jsonify({'result' : []})
+		return jsonify({'result' : [], 'userInfo': []})
 
 	
 @app.route('/api/<string:menuName>', methods=['GET'])
