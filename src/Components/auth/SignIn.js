@@ -11,13 +11,13 @@ import firebaseConfig from '../../config/fbConfig'
 export const SignIn = () => {
 	const [loginInfo, setLoginInfo] = useState([])
 	const [cookie, setCookie] = useState([])
+	const [uid, setUid] = useState([])
 	const history = useHistory();
 
 	if(!firebase.apps.length){
 		firebase.initializeApp(firebaseConfig);
 	}
 	
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
@@ -25,18 +25,20 @@ export const SignIn = () => {
 		.then(user => {
 			return user.user.getIdToken().then(idToken => {
 				const csrfToken = Cookies.get('crsfToken')
+				const uid = user.user.uid
 				fetch('http://127.0.0.1:5000/sessionLogin', {
 					method : "POST",
 					headers:{
 						"Content-type": "application/json; charset=UTF-8"
 					},
-					body: JSON.stringify({'idToken':idToken}),
+					body: JSON.stringify({'idToken':idToken, 'uid':uid}),
 					credentials: 'include'
 				})
 			});
 		}).then(() => {
 			return firebase.auth().signOut();
 		}).then(() => {
+			console.log(uid)
 			history.push({
 				pathname: '/order',
 				state: { 'email': loginInfo['email'] }

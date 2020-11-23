@@ -21,6 +21,7 @@ export const OrderMenu = () => {
 	const location = useLocation()
 
 	useEffect(() => {
+		console.log(location.state)
 		fetch('http://127.0.0.1:5000/api',{
 			method:'POST',
 			headers:{
@@ -33,9 +34,7 @@ export const OrderMenu = () => {
 				return res.json()
 			}
 		}).then((data) => {
-			console.log(data)
 			setMenuList(data.result)
-			console.log(data.userInfo)
 		})
 	},[])
 

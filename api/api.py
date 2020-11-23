@@ -116,7 +116,6 @@ def token():
 
 @app.route('/api',methods=['POST'])
 def getMenu():
-	redirect('/api')
 	session_cookie = request.cookies.get('session')
 	print(session_cookie)
 	email = request.json['email']
