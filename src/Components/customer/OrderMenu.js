@@ -7,7 +7,7 @@ import { OrderMenuStep3 } from './OrderMenuStep3';
 import { OrderMenuStep4 } from './OrderMenuStep4';
 import { Navbar } from '../layout/Navbar';
 import { Payment } from './Payment';
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useHistory } from 'react-router-dom'
 
 export const OrderMenu = () => {
 	const [step, setStep] = useState(1)
@@ -19,21 +19,21 @@ export const OrderMenu = () => {
 	const [order, setOrder] = useState([])
 	const [userInfo, setUserInfo] = useState([])
 	const location = useLocation()
+	const history = useHistory()
 
 	useEffect(() => {
-		console.log(location.state)
 		fetch('http://127.0.0.1:5000/api',{
-			method:'POST',
+			method:'GET',
 			headers:{
 				"Content-type": "application/json; charset=UTF-8"
 			},
 			credentials:'include',
-			body : JSON.stringify(location.state)
 		}).then(res => {
 			if(res.ok){
 				return res.json()
 			}
 		}).then((data) => {
+			setUserInfo(location.state.userInfo[0])
 			setMenuList(data.result)
 		})
 	},[])
@@ -44,6 +44,7 @@ export const OrderMenu = () => {
 		currentStep = currentStep >= 3 ? 4 : currentStep + 1;
 		setStep(currentStep);
 		let price = 0;
+		let discount = 0;
 		let d = {...details};
 		let detail = []
 		price = style.quantity * style.price;
@@ -53,13 +54,28 @@ export const OrderMenu = () => {
 				detail.push(d[i])
 			}
 		}
+		switch(userInfo.level){
+			case 'bronze': 
+				discount = 1
+				break;
+			case 'silver': 
+				discount = 0.9
+				break;
+			case 'gold' : 
+				discount = 0.8
+				break;
+			case 'platinum' : 
+				discount = 0.7
+				break;
+			default: discount = 1
+		}
 		setOrder({
 			menuName : menu.name,
 			style : style.name,
 			style_price : style.price,
 			style_quantity: style.quantity,
 			details : detail,
-			price : price
+			price : price*discount
 		})
 		window.scrollTo(0,0);
 	}
@@ -82,6 +98,7 @@ export const OrderMenu = () => {
 	}
 
 	const handleMenu = (e) => {
+		e.preventDefault()
 		if((e.target.id ==="샴페인 축제 디너(Champagne Feast dinner)") && (e.target.value === "1")){
 			alert("샴페인 축제디너는 2인분 이상 주문하셔야 합니다.")
 		}
@@ -142,12 +159,38 @@ export const OrderMenu = () => {
 		setDetails(detail);
 	}
 
+	const changeUser = (e) => {
+		let u = {...userInfo}
+		u[e.target.id] = e.target.value;
+		setUserInfo(u);
+	}
+
 	const _payment = (e) => {
 		let currentStep = step;
 		currentStep = currentStep >= 4 ? 5 : currentStep + 1;
 		setStep(currentStep);
 	}
 
+	const _done = (e) => {
+		e.preventDefault();
+		fetch('http://127.0.0.1:5000/orderDone', {
+			method:'POST',
+			headers: {
+				"Content-type": "application/json; charset=UTF-8"
+			},
+			body : JSON.stringify({'orderInfo' : order, 'user':userInfo}),
+			credentials:'include'
+		}).then(res => {
+			if(res.ok){
+				return res.json()
+			}
+		}).then((data) => {
+			history.push({
+				pathname: '/orderDone',
+				state: {'myOrder':data.myOrder}
+			})
+		})
+	}
 
 	return(
 		<>
@@ -174,7 +217,7 @@ export const OrderMenu = () => {
 						<OrderMenuStep2 handleStyle={handleStyle} currentStep = {step} styleList={styleList}/>
 						<OrderMenuStep3 currentStep = {step} userDetails={details} handleDetail={handleDetail}/>
 						<OrderMenuStep4 currentStep={step} order = {order} />
-						<Payment currentStep={step} order={order} />
+						<Payment currentStep={step} order={order} userInfo={userInfo} handleChange={changeUser} handleSubmit={_done}/>
 					</div>
 					<div className="card col s12 z-depth-0 hidden">
 						{step === 3? <div onClick = {_next} className="btn blue darken-4 right">다음</div> : null}

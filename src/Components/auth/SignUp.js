@@ -34,7 +34,7 @@ export const SignUp = () => {
 					},
 					body : JSON.stringify(values)
 				}).then(() => {
-					<Redirect to='/order'/>
+					history.push('/')
 				})
 			}else{alert('개인정보 처리방침에 동의해주셔야합니다.')}
 		},

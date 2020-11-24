@@ -3,6 +3,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { SignIn } from './Components/auth/SignIn';
 import {OrderMenu} from './Components/customer/OrderMenu';
 import { SignUp } from './Components/auth/SignUp'
+import {OrderDone} from './Components/customer/OrderDone'
+import {ManageOrder} from './Components/staff/ManageOrder';
 
 function App() {
   return (
@@ -17,6 +19,12 @@ function App() {
           </Route>
           <Route path='/order'>
             <OrderMenu />
+          </Route>
+          <Route path='/orderDone'>
+            <OrderDone />
+          </Route>
+          <Route path='/manageOrder'>
+            <ManageOrder />
           </Route>
         </Switch>
       </div>

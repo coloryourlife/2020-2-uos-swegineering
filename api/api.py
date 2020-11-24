@@ -8,13 +8,14 @@ from flask_pymongo import pymongo
 from functools import wraps
 import datetime
 
-
 config = {
   'ORIGINS': [
     'http://localhost:3000',  # React
     'http://127.0.0.1:3000',
 		'http://127.0.0.1:3000/order',
-		'http://localhost:3000/order'  # React
+		'http://localhost:3000/order',
+		'http://127.0.0.1:3000/orderDone',
+		'http://localhost:3000/orderDone',  # React
   ],
 
   'SECRET_KEY': '...'
@@ -31,26 +32,22 @@ cred = credentials.Certificate('fbAdminConfig.json')
 firebase = firebase_admin.initialize_app(cred)
 pb = pyrebase.initialize_app(json.load(open('fbconfig.json')))
 
-# def check_token(f):
-# 	@wraps(f)
-# 	def wrap(*args, **kwargs):
-# 		if not request.headers.get('authorization'):
-# 			return {'message': 'No token provided'}, 400
-# 		try:
-# 			user = auth.verify_id_token(request.headers['authorization'])
-# 			request.user = user
-# 		except:
-# 			return {'message' : 'Invalid token provided.'}, 400
-# 		return f(*args, **kwargs)
-# 	return wrap
-
 @app.route('/sessionLogin', methods=['POST'])
 def session_login():
 	id_token = request.json['idToken']
+	uid = request.json['uid']
+	print(uid)
 	expires_in = datetime.timedelta(days=2)
 	try:
+		userInfo = pymongo.collection.Collection(db,'userInfo')
+		userInfos = userInfo.find()
+		user = []
+		for u in userInfos:
+			if u['uid'] == uid:
+				user.append({'email':u['email'], 'name':u['name'], 'address':u['address'], 'phoneNumber':u['phoneNumber'],'cardNum':u['cardNum'],'level':u['level'],
+				'total_order':u['total_order'], 'uid':u['uid'], 'staff':u['staff']})
 		session_cookie = auth.create_session_cookie(id_token, expires_in=expires_in)
-		response = jsonify({'status':'success'})
+		response = jsonify({'status':'success', 'userInfo': user})
 		expires = datetime.datetime.now() + expires_in
 		response.set_cookie(
 			'session', session_cookie, expires=expires, httponly=False
@@ -58,22 +55,6 @@ def session_login():
 		return response
 	except Exception.FirebaseError:
 		return abort(401, "Failed")
-
-# @app.route('/api/sessionInit', methods=['POST'])
-# def session_initializer():
-# 	#id_token = request.form['idToken']
-# 	id_token = request.headers.get('authorization')
-# 	expires_in = datetime.timedelta(days=1)
-# 	try:
-# 		session_cookie = auth.create_session_cookie(id_token, expires_in = expires_in)
-# 		expires = datetime.datetime.now() + expires_in
-# 		response = jsonify({'status':'success'})
-# 		response.set_cookie(
-# 			'session', session_cookie, expires=expires, httponly=False
-# 		) 
-# 		return response
-# 	except auth.AuthError:
-# 		return{'message' : 'Error'}, 400
 
 @app.route('/api/signup', methods=['POST'])
 def signup():
@@ -88,7 +69,7 @@ def signup():
 			password = password
 		)
 		userdb = pymongo.collection.Collection(db,'userInfo')
-		userdb.insert_one({"email": userInfo['email'], "name":userInfo['name'], 'address':userInfo['address'], 'phoneNumber':userInfo['phoneNumber'],'cardNum':userInfo['cardNum'],'level':'bronze','total_order': 0})
+		userdb.insert_one({"email": userInfo['email'], "name":userInfo['name'], 'address':userInfo['address'], 'phoneNumber':userInfo['phoneNumber'],'cardNum':userInfo['cardNum'],'level':'bronze','total_order': 0,'uid':user.uid,'staff':False})
 		return {'message' : f'Successfully created user {user.uid}'}, 200
 	except:
 		return {'message' : 'Error creating user'}, 400
@@ -114,27 +95,19 @@ def token():
 	except:
 		return {'message' : 'There was an error logging in'}
 
-@app.route('/api',methods=['POST'])
+@app.route('/api',methods=['GET'])
 def getMenu():
 	session_cookie = request.cookies.get('session')
-	print(session_cookie)
-	email = request.json['email']
 	try:
-		decoded_claims = auth.verify_session_cookie(session_cookie, check_revoked=True)
-		print(decoded_claims)
+		# decoded_claims = auth.verify_session_cookie(session_cookie, check_revoked=True)
+		# print(decoded_claims)
 		menu = pymongo.collection.Collection(db, 'menu')
-		userInfo = pymongo.collection.Collection(db,'userInfo')
-		userInfos = userInfo.find()
-		user = []
 		output = []
-		for u in userInfos:
-			if u['email'] == email:
-				user.append(u)
 		for m in menu.find():
 			output.append({'name' : m['name'], 'content':m['content'], 'price':m['price'],'quantity':m['quantity']})
-		return jsonify({'result' : output, 'userInfo' : user})
+		return jsonify({'result' : output})
 	except Exception:
-		return jsonify({'result' : [], 'userInfo': []})
+		return jsonify({'result' : []})
 
 	
 @app.route('/api/<string:menuName>', methods=['GET'])
@@ -159,6 +132,34 @@ def getDetails(menuName):
 		if d['name'] == menuName:
 			details_list.append({'name' : d['name'], 'details':d['details']})
 	return jsonify({'result' : details_list})
+
+@app.route('/orderDone', methods=['POST'])
+def newOrder():
+	data = request.json
+	orderInfo = data['orderInfo']
+	userInfo = data['user']
+	newOrder = []
+	newOrder.append({"name":userInfo['name'],"address":userInfo['address'],'phoneNumber':userInfo['phoneNumber'],'orderStatus':'주문확인',
+		'menuName':orderInfo['menuName'], 'style':orderInfo['style'], 'quantity':orderInfo['style_quantity'], 'order_details':orderInfo['details']
+	})
+	userdb = pymongo.collection.Collection(db,'orderList')
+	userdb.insert_one({"name":userInfo['name'],"address":userInfo['address'],'phoneNumber':userInfo['phoneNumber'],'orderStatus':'주문확인',
+		'menuName':orderInfo['menuName'], 'style':orderInfo['style'], 'quantity':orderInfo['style_quantity'], 'order_details':orderInfo['details']
+	})
+	return jsonify({'myOrder': newOrder})
+
+@app.route('/orderList', methods=['GET'])
+def getOrderList():
+	orderdb = pymongo.collection.Collection(db,'orderList')
+	orderList = []
+	orderList_all = orderdb.find()
+	for item in orderList_all:
+		if item['orderStatus'] != "배달완료":
+			orderList.append({'address':item['address'], 'phoneNumber':item['phoneNumber'], 'orderStatus':item['orderStatus'],
+				'menuName':item['menuName'], 'style':item['style'], 'quantity':item['quantity'], 'order_details':item['order_details'], 'name':item['name']
+			})
+	return jsonify({'orderList':orderList})
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
