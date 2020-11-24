@@ -7,6 +7,7 @@ import { OrderMenuStep3 } from './OrderMenuStep3';
 import { OrderMenuStep4 } from './OrderMenuStep4';
 import { Payment } from './Payment';
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 export const OrderMenu = () => {
 	const [step, setStep] = useState(1)

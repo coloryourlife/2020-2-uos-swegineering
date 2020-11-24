@@ -25,9 +25,8 @@ export const SignIn = (props) => {
 				headers:{
 					'Authorization' : data.token
 				},
-				credentials: "include",
-				credentials: "same-origin"
-			}).then(()=>{
+				credentials: "include"
+			}).then((res)=>{
 				history.push('/order')
 			})
 		})
