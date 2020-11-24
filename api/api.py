@@ -88,8 +88,6 @@ def token():
 def getMenu():
 	print(request.headers)
 	session_cookie = request.cookies.get('session')
-	print(session_cookie)
-	print(1)
 	try:
 		decoded_claims = auth.verify_session_cookie(session_cookie, check_revoked=True)
 		menu = pymongo.collection.Collection(db, 'menu')
