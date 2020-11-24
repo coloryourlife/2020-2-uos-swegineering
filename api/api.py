@@ -84,7 +84,7 @@ def token():
 	except:
 		return {'message' : 'There was an error logging in'}
 
-@app.route('/api',methods=['GET'])
+@app.route('/api',methods=['GET','POST'])
 def getMenu():
 	print(request.headers)
 	session_cookie = request.cookies.get('session')
