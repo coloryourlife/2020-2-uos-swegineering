@@ -31,7 +31,7 @@ export const OrderMenuStep4 = ({ currentStep, order}) => {
 									))}
 								</tbody>
 							</table>
-							<div className="priceAll"> 총 금액 : {order.price}</div>
+							<div className="priceAll"> 총 금액(등급 할인 적용) : {order.price}</div>
 						</div>
 					</div>
 				</div>
