@@ -64,6 +64,8 @@ export const ManageOrder = () => {
 									<div className="card-content">
 										<ul>
 											<li>배달 주소 : {item.address}</li>
+											<li>배달 날짜 : {item.date}</li>
+											<li>배달 시간 : {item.time}</li>
 											<li>전화번호 : {item.phoneNumber}</li>
 											<li>주문 메뉴 : {item.menuName}</li>
 											<li>주문 스타일 : {item.style}</li>

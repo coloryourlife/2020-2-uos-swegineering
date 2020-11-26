@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Payment = ({ currentStep, order, userInfo,handleChange, handleSubmit }) => {
+export const Payment = ({ currentStep, order, userInfo,handleChange, handleSubmit,handleDate }) => {
 	if (currentStep !== 5) return null;
 
 	if (order.length === 0) return <div className="container">로딩중...</div>
@@ -18,6 +18,14 @@ export const Payment = ({ currentStep, order, userInfo,handleChange, handleSubmi
 							<div className="input-field">
 								주소
 								<input className="center"type="text" id='address'onChange={handleChange} value={userInfo.address}/>
+							</div>
+							<div className="input-field col s12 m6 l6">
+								날짜
+								<input className="center"type="date" id="date" onChange={handleDate}/>
+							</div>
+							<div className="input-field col s12 m6 l6">
+								시간
+								<input className="center" type="time" id="time" onChange={handleDate} />
 							</div>
 							<div className="cardNum-container">
 								<span>카드번호</span>

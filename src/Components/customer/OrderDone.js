@@ -5,7 +5,6 @@ import {useLocation} from 'react-router-dom'
 export const OrderDone = () => {
 	const location = useLocation()
 	let myOrder = location.state.myOrder
-	console.log(myOrder)
 	return (
 		<>
 			<Navbar />
@@ -19,6 +18,8 @@ export const OrderDone = () => {
 							<div className="card-content"key={order.name}>
 								<div>주문자 : {order.name}</div>
 								<div>주소 : {order.address}</div>
+								<div>날짜 : {order.date}</div>
+								<div>시간 : {order.time}</div>
 								<div>전화번호 : {order.phoneNumber}</div>
 								<div>코스 : {order.menuName}</div>
 								<div>스타일 : {order.style}</div>

@@ -144,11 +144,13 @@ def newOrder():
 	userInfo = data['user']
 	newOrder = []
 	newOrder.append({"name":userInfo['name'],"address":userInfo['address'],'phoneNumber':userInfo['phoneNumber'],'orderStatus':'주문확인',
-		'menuName':orderInfo['menuName'], 'style':orderInfo['style'], 'quantity':orderInfo['style_quantity'], 'order_details':orderInfo['details']
+		'menuName':orderInfo['menuName'], 'style':orderInfo['style'], 'quantity':orderInfo['style_quantity'], 'order_details':orderInfo['details'], 'date':orderInfo['date']
+		,'time':orderInfo['time']
 	})
 	userdb = pymongo.collection.Collection(db,'orderList')
 	userdb.insert_one({"name":userInfo['name'],"address":userInfo['address'],'phoneNumber':userInfo['phoneNumber'],'orderStatus':'주문확인',
 		'menuName':orderInfo['menuName'], 'style':orderInfo['style'], 'quantity':orderInfo['style_quantity'], 'order_details':orderInfo['details'], 'id':userInfo['email']
+		,'date':orderInfo['date'],'time':orderInfo['time']
 	})
 	return jsonify({'myOrder': newOrder})
 
@@ -156,11 +158,13 @@ def newOrder():
 def getOrderList():
 	orderdb = pymongo.collection.Collection(db,'orderList')
 	orderList = []
-	orderList_all = orderdb.find()
+	orderList_all = orderdb.find().sort([('date', 1), ('time', 1)])
+	print(orderList_all)
 	for item in orderList_all:
 		if item['orderStatus'] != "완료":
 			orderList.append({'address':item['address'], 'phoneNumber':item['phoneNumber'], 'orderStatus':item['orderStatus'],
-				'menuName':item['menuName'], 'style':item['style'], 'quantity':item['quantity'], 'order_details':item['order_details'], 'name':item['name'], 'id':item['id']
+				'menuName':item['menuName'], 'style':item['style'], 'quantity':item['quantity'], 'order_details':item['order_details'], 'name':item['name'], 'id':item['id'],
+				'date':item['date'], 'time':item['time']
 			})
 	return jsonify({'orderList':orderList})
 

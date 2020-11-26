@@ -171,6 +171,14 @@ export const OrderMenu = () => {
 		setStep(currentStep);
 	}
 
+	const setDate = (e) => {
+		e.preventDefault()
+		setOrder({
+			...order,
+			[e.target.id] : e.target.value
+		})
+	}
+
 	const _done = (e) => {
 		e.preventDefault();
 		fetch('http://127.0.0.1:5000/orderDone', {
@@ -217,7 +225,7 @@ export const OrderMenu = () => {
 						<OrderMenuStep2 handleStyle={handleStyle} currentStep = {step} styleList={styleList}/>
 						<OrderMenuStep3 currentStep = {step} userDetails={details} handleDetail={handleDetail}/>
 						<OrderMenuStep4 currentStep={step} order = {order} />
-						<Payment currentStep={step} order={order} userInfo={userInfo} handleChange={changeUser} handleSubmit={_done}/>
+						<Payment currentStep={step} order={order} userInfo={userInfo} handleChange={changeUser} handleSubmit={_done} handleDate={setDate}/>
 					</div>
 					<div className="card col s12 z-depth-0 hidden">
 						{step === 3? <div onClick = {_next} className="btn blue darken-4 right">다음</div> : null}
