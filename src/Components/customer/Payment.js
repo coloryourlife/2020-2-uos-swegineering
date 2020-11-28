@@ -21,11 +21,11 @@ export const Payment = ({ currentStep, order, userInfo,handleChange, handleSubmi
 							</div>
 							<div className="input-field col s12 m6 l6">
 								날짜
-								<input className="center"type="date" id="date" onChange={handleDate}/>
+								<input className="center"type="date" id="date" onChange={handleDate} required/>
 							</div>
 							<div className="input-field col s12 m6 l6">
 								시간
-								<input className="center" type="time" id="time" onChange={handleDate} />
+								<input className="center" type="time" id="time" onChange={handleDate} required/>
 							</div>
 							<div className="cardNum-container">
 								<span>카드번호</span>

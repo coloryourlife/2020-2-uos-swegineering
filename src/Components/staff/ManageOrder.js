@@ -5,7 +5,7 @@ export const ManageOrder = () => {
 	const [orderList, setOrderList] = useState([])
 
 	useEffect(() => {
-		fetch('http://127.0.0.1:5000/orderList', {
+		fetch('http://127.0.0.1:5000/manage/orderList', {
 			method: 'GET',
 			headers: {
 				"Content-type": "application/json; charset=UTF-8"
@@ -28,7 +28,7 @@ export const ManageOrder = () => {
 		setOrderList(orderList.map(item => 
 			item.id === e.target.id ? {...item, 'orderStatus': status} : item
 		))
-		fetch('http://127.0.0.1:5000/serviceDone', {
+		fetch('http://127.0.0.1:5000/manage/serviceDone', {
 			method: 'POST',
 			headers: {
 				"Content-type": "application/json; charset=UTF-8"
@@ -40,7 +40,7 @@ export const ManageOrder = () => {
 
 	const handleFinish = (e) => {
 		e.preventDefault();
-		fetch('http://127.0.0.1:5000/serviceDone', {
+		fetch('http://127.0.0.1:5000/manage/serviceDone', {
 			method: 'POST',
 			headers: {
 				"Content-type": "application/json; charset=UTF-8"

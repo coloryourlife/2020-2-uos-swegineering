@@ -25,7 +25,7 @@ export const SignIn = () => {
 			.then(user => {
 				return user.user.getIdToken().then(idToken => {
 					const csrfToken = Cookies.get('crsfToken')
-					fetch('http://127.0.0.1:5000/sessionLogin', {
+					fetch('http://127.0.0.1:5000/auth/sessionLogin', {
 						method: "POST",
 						headers: {
 							"Content-type": "application/json; charset=UTF-8"
@@ -70,12 +70,10 @@ export const SignIn = () => {
 						<span className="card-title scorehvy center">로그인</span>
 						<form action="" onSubmit={handleSubmit} className='white'>
 							<div className="input-field">
-								<label htmlFor="email">아이디</label>
-								<input type="email" id='email' onChange={handleChange} />
+								<input type="email" id='email' onChange={handleChange} placeholder="아이디"/>
 							</div>
 							<div className="input-field">
-								<label htmlFor="password">비밀번호</label>
-								<input type="password" id='password' onChange={handleChange} />
+								<input type="password" id='password' onChange={handleChange} placeholder="비밀번호"/>
 							</div>
 							<div className="input-field center">
 								<button className="btn myomColor-background lighten-1">로그인</button>

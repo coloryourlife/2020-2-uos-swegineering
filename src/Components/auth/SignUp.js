@@ -18,16 +18,16 @@ export const SignUp = () => {
 		},
 		validationSchema: Yup.object({
 			name: Yup.string().required('필수입력사항입니다.'),
-			email: Yup.string().email('Invalid email address').required('Required'),
-			address : Yup.string().required('Required'),
-			phoneNumber : Yup.string().required('Required'),
-			cardNum : Yup.string().required("Required"),
-			password: Yup.string().required("Required"),
-			privacyChecked: Yup.boolean().required("Required")
+			email: Yup.string().email('Invalid email address').required('필수입력사항입니다.'),
+			address: Yup.string().required('필수입력사항입니다.'),
+			phoneNumber: Yup.string().required('필수입력사항입니다.'),
+			cardNum: Yup.string().required("필수입력사항입니다."),
+			password: Yup.string().required("필수입력사항입니다."),
+			privacyChecked: Yup.boolean().required("필수입력사항입니다.")
 		}),
 		onSubmit: values => {
 			if(values['privacyChecked']){
-				fetch('http://127.0.0.1:5000/api/signup', {
+				fetch('http://127.0.0.1:5000/auth/signup', {
 					method: 'POST',
 					headers: {
 						"Content-type":"application/json; charset=UTF-8"
@@ -46,8 +46,7 @@ export const SignUp = () => {
 					<div className="card-content">
 						<h5 className="grey-text text-darken-3">회원가입</h5>
 						<div className="input-field">
-							<label htmlFor="email">아이디</label>
-							<input type="text" id='email' {...formik.getFieldProps('email')}/>
+							<input type="text" id='email' {...formik.getFieldProps('email')} placeholder="아이디(이메일)"/>
 							{
 								formik.touched.email && formik.errors.email ? (
 									<div>{formik.errors.email}</div>
@@ -55,8 +54,7 @@ export const SignUp = () => {
 							}
 						</div>
 						<div className="input-field">
-							<label htmlFor="password">비밀번호</label>
-							<input type="password" id='password' {...formik.getFieldProps('password')} />
+							<input type="password" id='password' {...formik.getFieldProps('password')} placeholder="비밀번호"/>
 							{
 								formik.touched.password && formik.errors.password ? (
 									<div>{formik.errors.password}</div>
@@ -64,8 +62,7 @@ export const SignUp = () => {
 							}
 						</div>
 						<div className="input-field">
-							<label htmlFor="name">이름</label>
-							<input type="text" id='name' {...formik.getFieldProps('name')} />
+							<input type="text" id='name' {...formik.getFieldProps('name')} placeholder="이름"/>
 							{
 								formik.touched.name && formik.errors.name ? (
 									<div>{formik.errors.name}</div>
@@ -73,8 +70,7 @@ export const SignUp = () => {
 							}
 						</div>
 						<div className="input-field">
-							<label htmlFor="address">주소</label>
-							<input type="text" id='address' {...formik.getFieldProps('address')} />
+							<input type="text" id='address' {...formik.getFieldProps('address')} placeholder="주소"/>
 							{
 								formik.touched.address && formik.errors.address ? (
 									<div>{formik.errors.address}</div>
@@ -82,8 +78,7 @@ export const SignUp = () => {
 							}
 						</div>
 						<div className="input-field">
-							<label htmlFor="phoneNumber">전화번호</label>
-							<input type="text" id='phoneNumber' {...formik.getFieldProps('phoneNumber')} />
+							<input type="text" id='phoneNumber' {...formik.getFieldProps('phoneNumber')} placeholder="전화번호"/>
 							{
 								formik.touched.phoneNumber && formik.errors.phoneNumber ? (
 									<div>{formik.errors.phoneNumber}</div>
@@ -91,8 +86,7 @@ export const SignUp = () => {
 							}
 						</div>
 						<div className="input-field">
-							<label htmlFor="cardNum">카드번호</label>
-							<input type="text" id='cardNum' {...formik.getFieldProps('cardNum')} />
+							<input type="text" id='cardNum' {...formik.getFieldProps('cardNum')} placeholder = "카드번호"/>
 							{
 								formik.touched.cardNum && formik.errors.cardNum ? (
 									<div>{formik.errors.cardNum}</div>

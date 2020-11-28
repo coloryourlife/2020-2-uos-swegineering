@@ -8,9 +8,12 @@ import { OrderMenuStep4 } from './OrderMenuStep4';
 import { Navbar } from '../layout/Navbar';
 import { Payment } from './Payment';
 import { Link, useLocation, useHistory } from 'react-router-dom'
+import { set } from 'js-cookie';
+import { OrderFromHistory } from './OrderFromHistory';
 
 export const OrderMenu = () => {
-	const [step, setStep] = useState(1)
+	const [step, setStep] = useState(0)
+	const [orderHistory, setOrderHistory] = useState([])
 	const [menuList, setMenuList] = useState([])
 	const [menu, setMenu] = useState([])
 	const [style, setStyle] = useState([])
@@ -22,21 +25,56 @@ export const OrderMenu = () => {
 	const history = useHistory()
 
 	useEffect(() => {
-		fetch('http://127.0.0.1:5000/api',{
-			method:'GET',
-			headers:{
+		fetch(`http://127.0.0.1:5000/order/orderHistory/${location.state.email}`, {
+			method: 'GET',
+			headers: {
 				"Content-type": "application/json; charset=UTF-8"
 			},
-			credentials:'include',
+			credentials: 'include'
 		}).then(res => {
 			if(res.ok){
 				return res.json()
 			}
 		}).then((data) => {
 			setUserInfo(location.state.userInfo[0])
-			setMenuList(data.result)
+			setOrderHistory(data.orderHistory)
 		})
 	},[])
+
+	const getMenu = (e) => {
+		e.preventDefault();
+		let currentStep = step;
+		currentStep = currentStep + 1;
+		setStep(currentStep)
+		fetch('http://127.0.0.1:5000/order/menu', {
+			method: 'GET',
+			headers: {
+				"Content-type": "application/json; charset=UTF-8"
+			},
+			credentials: 'include',
+		}).then(res => {
+			if (res.ok) {
+				return res.json()
+			}
+		}).then((data) => {
+			setMenuList(data.result)
+		})
+	}
+
+	const orderByHistory = (e) => {
+		e.preventDefault();
+		let i = e.target.id
+		let currentStep = step;
+		currentStep = currentStep + 5;
+		setStep(currentStep);
+		setOrder({
+			menuName : orderHistory[i].menuName,
+			style: orderHistory[i].style,
+			style_quantity: orderHistory[i].quantity,
+			details: orderHistory[i].order_details,
+			price : orderHistory[i].price
+		})
+	}
 
 	const _next = (e) => {
 		e.preventDefault();
@@ -83,7 +121,7 @@ export const OrderMenu = () => {
 	const _prev = (e) => {
 		e.preventDefault();
 		let currentStep = step;
-		currentStep = currentStep <= 1 ? 1 : currentStep - 1;
+		currentStep = currentStep <= 0 ? 0 : currentStep - 1;
 		setStep(currentStep);
 	}
 
@@ -113,7 +151,7 @@ export const OrderMenu = () => {
 				name : e.target.id,
 				quantity : e.target.value
 			});
-			fetch(`http://127.0.0.1:5000/api/${e.target.id}`)
+			fetch(`http://127.0.0.1:5000/order/style/${e.target.id}`)
 			.then(res => {
 				if(res.ok){
 					return res.json()
@@ -133,7 +171,7 @@ export const OrderMenu = () => {
 			quantity : menu.quantity,
 			price : e.target.value
 		});
-		fetch(`http://127.0.0.1:5000/order/${menu.name}`)
+		fetch(`http://127.0.0.1:5000/order/details/${menu.name}`)
 		.then(res => {
 			if(res.ok){
 				return res.json()
@@ -181,7 +219,7 @@ export const OrderMenu = () => {
 
 	const _done = (e) => {
 		e.preventDefault();
-		fetch('http://127.0.0.1:5000/orderDone', {
+		fetch('http://127.0.0.1:5000/order/done', {
 			method:'POST',
 			headers: {
 				"Content-type": "application/json; charset=UTF-8"
@@ -221,6 +259,7 @@ export const OrderMenu = () => {
 					<div className="card col s12">
 						<h4 className="center">MR.대박 디너서비스를 찾아주셔서 감사합니다.</h4>
 						<h6 className="center" style={{marginBottom:'3rem'}}>아래의 주문서를 작성해주시면 완벽한 서비스로 보답하겠습니다.</h6>
+						<OrderFromHistory orderHistory={ orderHistory} getMenu = {getMenu} currentStep = {step} orderByHistory = {orderByHistory}/>
 						<OrderMenuStep1 handleMenu = {handleMenu} currentStep = {step} menuList={menuList} handleChange={handleChange} />
 						<OrderMenuStep2 handleStyle={handleStyle} currentStep = {step} styleList={styleList}/>
 						<OrderMenuStep3 currentStep = {step} userDetails={details} handleDetail={handleDetail}/>
@@ -229,7 +268,7 @@ export const OrderMenu = () => {
 					</div>
 					<div className="card col s12 z-depth-0 hidden">
 						{step === 3? <div onClick = {_next} className="btn blue darken-4 right">다음</div> : null}
-						{step !== 1 ? <div onClick = {_prev} className="btn grey darken-2 left">이전</div> : null}
+						{step !== 0 && step !== 5? <div onClick = {_prev} className="btn grey darken-2 left">이전</div> : null}
 						{step === 4 ? <button onClick={_payment}className='btn red lighten-3 right'>결제하기</button> : null}
 					</div>
 				</form>

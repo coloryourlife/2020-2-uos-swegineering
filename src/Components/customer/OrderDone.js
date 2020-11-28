@@ -16,15 +16,17 @@ export const OrderDone = () => {
 						return(
 							<>
 							<div className="card-content"key={order.name}>
-								<div>주문자 : {order.name}</div>
-								<div>주소 : {order.address}</div>
-								<div>날짜 : {order.date}</div>
-								<div>시간 : {order.time}</div>
-								<div>전화번호 : {order.phoneNumber}</div>
-								<div>코스 : {order.menuName}</div>
-								<div>스타일 : {order.style}</div>
-								<div>수량 : {order.quantity} 인분</div>
-								<div>상세품목</div>
+								<ul>
+									<li>주문자 : {order.name}</li>
+									<li>주소 : {order.address}</li>
+									<li>날짜 : {order.date}</li>
+									<li>시간 : {order.time}</li>
+									<li>전화번호 : {order.phoneNumber}</li>
+									<li>코스 : {order.menuName}</li>
+									<li>스타일 : {order.style}</li>
+									<li>수량 : {order.quantity} 인분</li>
+								</ul>
+								<div>상세 품목</div>
 								<table>
 									<thead>
 										<tr>
