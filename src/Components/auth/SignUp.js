@@ -27,7 +27,7 @@ export const SignUp = () => {
 		}),
 		onSubmit: values => {
 			if(values['privacyChecked']){
-				fetch('http://127.0.0.1:5000/auth/signup', {
+				fetch('http://3.35.3.86:5000/auth/signup', {
 					method: 'POST',
 					headers: {
 						"Content-type":"application/json; charset=UTF-8"
