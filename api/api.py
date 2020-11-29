@@ -21,7 +21,9 @@ config = {
 		'http://localhost:3000/orderDone',
 		'http://localhost',
 		'https://swengineering-97cd3.firebaseapp.com',
-		'https://swengineering-97cd3.firebaseapp.com/*'  # React
+		'https://swengineering-97cd3.firebaseapp.com/*',
+		'http://swengineering.s3-website.ap-northeast-2.amazonaws.com',
+		'http://swengineering.s3-website.ap-northeast-2.amazonaws.com/*'  # React
   ],
 
   'SECRET_KEY': '...'
