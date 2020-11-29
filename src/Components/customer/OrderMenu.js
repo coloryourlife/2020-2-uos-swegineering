@@ -25,7 +25,7 @@ export const OrderMenu = () => {
 	const history = useHistory()
 
 	useEffect(() => {
-		fetch(`http://3.35.3.86:5000/order/orderHistory/${location.state.email}`, {
+		fetch(`http://13.209.98.249:5000/order/orderHistory/${location.state.email}`, {
 			method: 'GET',
 			headers: {
 				"Content-type": "application/json; charset=UTF-8"
@@ -46,7 +46,7 @@ export const OrderMenu = () => {
 		let currentStep = step;
 		currentStep = currentStep + 1;
 		setStep(currentStep)
-		fetch('http://3.35.3.86:5000/order/menu', {
+		fetch('http://13.209.98.249:5000/order/menu', {
 			method: 'GET',
 			headers: {
 				"Content-type": "application/json; charset=UTF-8"
@@ -151,7 +151,7 @@ export const OrderMenu = () => {
 				name : e.target.id,
 				quantity : e.target.value
 			});
-			fetch(`http://3.35.3.86:5000/order/style/${e.target.id}`)
+			fetch(`http://13.209.98.249:5000/order/style/${e.target.id}`)
 			.then(res => {
 				if(res.ok){
 					return res.json()
@@ -171,7 +171,7 @@ export const OrderMenu = () => {
 			quantity : menu.quantity,
 			price : e.target.value
 		});
-		fetch(`http://3.35.3.86:5000/order/details/${menu.name}`)
+		fetch(`http://13.209.98.249:5000/order/details/${menu.name}`)
 		.then(res => {
 			if(res.ok){
 				return res.json()
@@ -219,7 +219,7 @@ export const OrderMenu = () => {
 
 	const _done = (e) => {
 		e.preventDefault();
-		fetch('http://3.35.3.86:5000/order/done', {
+		fetch('http://13.209.98.249:5000/order/done', {
 			method:'POST',
 			headers: {
 				"Content-type": "application/json; charset=UTF-8"

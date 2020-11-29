@@ -25,7 +25,7 @@ export const SignIn = () => {
 			.then(user => {
 				return user.user.getIdToken().then(idToken => {
 					const csrfToken = Cookies.get('crsfToken')
-					fetch('http://3.35.3.86:5000/auth/sessionLogin', {
+					fetch('http://13.209.98.249:5000/auth/sessionLogin', {
 						method: "POST",
 						headers: {
 							"Content-type": "application/json; charset=UTF-8"
