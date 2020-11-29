@@ -1,9 +1,9 @@
 from flask import request
 from flask_restx import Resource, Api, Namespace
 from flask_pymongo import pymongo
+from dbconfig import CONNECTION_STRING
 
 ManageOrder = Namespace("ManageOrder")
-CONNECTION_STRING = "mongodb+srv://chris0319:rkdska0401@cluster0.0umdc.mongodb.net/test?retryWrites=true&w=majority"
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('mrdaebak')
 

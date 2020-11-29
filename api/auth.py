@@ -5,9 +5,9 @@ from flask_restx import Resource, Api, Namespace
 import datetime
 from flask_pymongo import pymongo
 from firebase_admin import credentials, auth
+from dbconfig import CONNECTION_STRING
 
 Auth = Namespace("Auth")
-CONNECTION_STRING = "mongodb+srv://chris0319:rkdska0401@cluster0.0umdc.mongodb.net/test?retryWrites=true&w=majority"
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('mrdaebak')
 #Connect to firebase
