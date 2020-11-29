@@ -38,4 +38,4 @@ app.config['JSON_AS_ASCII'] = False
 app.config["CORS_SUPPORTS_CREDENTIALS"] = True
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=True, host='0.0.0.0')
