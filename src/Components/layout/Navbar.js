@@ -11,7 +11,7 @@ export const Navbar = () => {
 		// console.log(Cookies)
 		// Cookies.remove("session");
 		// history.push('/')
-		fetch('http://127.0.0.1:5000/auth/sessionLogout', {
+		fetch('http://13.209.98.249:5000//auth/sessionLogout', {
 			method: 'POST',
 			credentials: "include",
 		}).then(res => {
