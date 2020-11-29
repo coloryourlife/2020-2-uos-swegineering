@@ -8,7 +8,7 @@ import {ManageOrder} from './Components/staff/ManageOrder';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <div className="App">
         <Switch>
           <Route exact path='/'>
