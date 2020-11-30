@@ -5,8 +5,8 @@ export const OrderFromHistory = ({currentStep, orderHistory, getMenu, orderByHis
 	if(orderHistory.length === 0) {
 		return(
 			<>
+				<div className="btn" onClick={getMenu}>새로운 주문하기</div>
 				<div>이전 주문목록이 없습니다.</div>
-				<div className="btn">새로운 주문하기</div>
 			</>
 		)
 	}
