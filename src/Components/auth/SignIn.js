@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { M, Modal,Button } from 'react-materialize';
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import cookie from 'react-cookie'
@@ -50,7 +51,7 @@ export const SignIn = () => {
 				}).then(() => {
 					return firebase.auth().signOut();
 				})
-			})
+			}).catch((e) => { alert('비밀번호를 다시 확인해주세요.') })
 	}
 
 	const handleChange = (e) => {
@@ -59,6 +60,7 @@ export const SignIn = () => {
 			[e.target.id]: e.target.value
 		})
 	}
+
 	return (
 		<>
 			<div className="container signin">
@@ -83,7 +85,7 @@ export const SignIn = () => {
 								<Link className='myomColor' to='/signup'>회원가입</Link>
 							</div>
 							<div className="forgotidpwd center">
-								<Link to='/' className='myomColor'>아이디/비밀번호찾기</Link>
+								<Link to='/forgotpwd' className='myomColor'>아이디/비밀번호찾기</Link>
 							</div>
 						</form>
 					</div>
